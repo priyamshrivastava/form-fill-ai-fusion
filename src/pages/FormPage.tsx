@@ -1,13 +1,14 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Save, Eye, Download } from "lucide-react";
+import { ArrowLeft, Save, Eye, Download, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Mock form field type
 interface FormField {
@@ -29,6 +30,7 @@ export default function FormPage() {
   const [fileName, setFileName] = useState<string>("");
   const [formFields, setFormFields] = useState<FormField[]>([]);
   const [showPreview, setShowPreview] = useState(false);
+  const [activeTab, setActiveTab] = useState("form");
   
   // Mock fetching the form data
   useEffect(() => {
@@ -97,6 +99,68 @@ export default function FormPage() {
     });
   };
 
+  const handleAutoFill = () => {
+    // Simulate AI auto-filling the form
+    toast({
+      title: "AI Processing",
+      description: "Using AI to fill your form automatically...",
+    });
+    
+    setTimeout(() => {
+      // Mock AI-filled data
+      const aiFilledData = formFields.map(field => {
+        if (field.value) return field; // Don't overwrite existing values
+        
+        // Generate mock values based on field ID
+        let aiValue = "";
+        switch(field.id) {
+          case "name":
+          case "taxpayer_name":
+            aiValue = "Alex Johnson";
+            break;
+          case "passport":
+            aiValue = "P123456789";
+            break;
+          case "nationality":
+            aiValue = "United States";
+            break;
+          case "travel_date":
+            aiValue = "2025-07-15";
+            break;
+          case "stay_duration":
+            aiValue = "14";
+            break;
+          case "visit_purpose":
+            aiValue = "Tourism";
+            break;
+          case "tax_id":
+            aiValue = "TIN9876543210";
+            break;
+          case "income":
+            aiValue = "85000";
+            break;
+          case "deductions":
+            aiValue = "12500";
+            break;
+          default:
+            aiValue = "";
+        }
+        
+        return {
+          ...field,
+          value: aiValue
+        };
+      });
+      
+      setFormFields(aiFilledData);
+      
+      toast({
+        title: "Auto-Fill Complete",
+        description: "AI has filled the form based on available data. Please review and edit as needed.",
+      });
+    }, 2000);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -111,7 +175,7 @@ export default function FormPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b">
+      <header className="border-b bg-primary/5">
         <div className="container flex h-16 items-center justify-between py-4">
           <div className="flex items-center">
             <Button variant="ghost" onClick={() => navigate("/dashboard")}>
@@ -135,26 +199,72 @@ export default function FormPage() {
 
       {/* Main Content */}
       <main className="container py-6">
-        <Card>
-          <CardContent className="p-6">
-            <div className="grid gap-6">
-              {formFields.map((field) => (
-                <div key={field.id}>
-                  <Label htmlFor={field.id}>{field.label}{field.required && <span className="text-red-500 ml-1">*</span>}</Label>
-                  <Input
-                    id={field.id}
-                    type={field.type}
-                    value={field.value}
-                    onChange={(e) => handleInputChange(field.id, e.target.value)}
-                    placeholder={field.placeholder}
-                    className="mt-1"
-                    required={field.required}
-                  />
-                </div>
-              ))}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+          <TabsList>
+            <TabsTrigger value="form">Form Details</TabsTrigger>
+            <TabsTrigger value="ocr">OCR Results</TabsTrigger>
+          </TabsList>
+          <TabsContent value="form">
+            <div className="flex justify-end mb-4">
+              <Button variant="secondary" onClick={handleAutoFill}>
+                <Send className="h-4 w-4 mr-2" />
+                Auto-fill with AI
+              </Button>
             </div>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardContent className="p-6">
+                <div className="grid gap-6">
+                  {formFields.map((field) => (
+                    <div key={field.id}>
+                      <Label htmlFor={field.id}>{field.label}{field.required && <span className="text-red-500 ml-1">*</span>}</Label>
+                      <Input
+                        id={field.id}
+                        type={field.type}
+                        value={field.value}
+                        onChange={(e) => handleInputChange(field.id, e.target.value)}
+                        placeholder={field.placeholder}
+                        className="mt-1"
+                        required={field.required}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="ocr">
+            <Card>
+              <CardContent className="p-6">
+                <div className="grid gap-6">
+                  <div className="p-4 bg-muted rounded-md">
+                    <h3 className="font-medium mb-2">OCR Detected Fields</h3>
+                    <div className="text-sm text-muted-foreground mb-4">
+                      Our OCR has detected the following fields from your uploaded PDF form.
+                    </div>
+                    {formFields.map((field) => (
+                      <div key={field.id} className="flex justify-between items-center py-2 border-b last:border-0">
+                        <span className="font-medium">{field.label}:</span>
+                        <div className="bg-primary/5 px-3 py-1 rounded text-sm">
+                          {field.id.includes("name") ? "Field: Full Name" : 
+                           field.id.includes("date") ? "Field: Date" : 
+                           field.id.includes("email") ? "Field: Email" : 
+                           field.id.includes("phone") ? "Field: Phone Number" : 
+                           field.id.includes("address") ? "Field: Address" : 
+                           "Field: " + field.label}
+                        </div>
+                      </div>
+                    ))}
+                    <div className="mt-4">
+                      <Button size="sm" onClick={() => setActiveTab("form")}>
+                        Edit Form Fields
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </main>
 
       {/* Preview Sheet */}
@@ -182,7 +292,7 @@ export default function FormPage() {
             <div className="mt-8 flex justify-end">
               <Button onClick={handleGeneratePDF}>
                 <Download className="h-4 w-4 mr-2" />
-                Download PDF
+                Download Filled PDF
               </Button>
             </div>
           </div>

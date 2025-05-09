@@ -84,8 +84,8 @@ export default function SignUp() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-bold">Create Account</CardTitle>
-          <CardDescription>Enter your information to get started</CardDescription>
+          <CardTitle className="text-3xl font-bold">FormFiller AI</CardTitle>
+          <CardDescription>HackIndia 2025 Project - Create an account to get started</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>

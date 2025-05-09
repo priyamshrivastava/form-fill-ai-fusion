@@ -108,7 +108,7 @@ export default function UploadModal({ isOpen, onClose, onUpload }: UploadModalPr
         <DialogHeader>
           <DialogTitle>Upload Form</DialogTitle>
           <DialogDescription>
-            Upload a PDF form that you want to fill automatically.
+            Upload a PDF form that you want to fill automatically with our AI.
           </DialogDescription>
         </DialogHeader>
         
@@ -156,7 +156,7 @@ export default function UploadModal({ isOpen, onClose, onUpload }: UploadModalPr
             <>
               <Upload className="h-10 w-10 text-muted-foreground mb-2" />
               <p className="text-center text-sm font-medium">
-                Drag & drop your PDF here, or click to browse
+                Drag & drop your PDF form here, or click to browse
               </p>
               <p className="text-xs text-muted-foreground mt-1 text-center">
                 Supports PDF files up to 10MB
@@ -173,7 +173,7 @@ export default function UploadModal({ isOpen, onClose, onUpload }: UploadModalPr
             onClick={handleUpload} 
             disabled={!selectedFile || isUploading}
           >
-            {isUploading ? "Uploading..." : "Upload"}
+            {isUploading ? "Processing..." : "Upload & Process Form"}
           </Button>
         </DialogFooter>
       </DialogContent>

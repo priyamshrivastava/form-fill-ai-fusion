@@ -73,20 +73,26 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b">
+      <header className="border-b bg-primary/5">
         <div className="container flex h-16 items-center justify-between py-4">
-          <h1 className="text-2xl font-bold">FormFill AI</h1>
-          <Button variant="ghost" onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Sign Out
-          </Button>
+          <h1 className="text-2xl font-bold">FormFiller AI</h1>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground">HackIndia 2025 Project</span>
+            <Button variant="ghost" onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign Out
+            </Button>
+          </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="container py-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl font-bold tracking-tight">Your Documents</h2>
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight">Your Forms</h2>
+            <p className="text-muted-foreground mt-1">Upload and manage your PDF forms for AI-powered filling</p>
+          </div>
           <Button onClick={() => setIsUploadModalOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Upload New Form
@@ -154,9 +160,9 @@ export default function Dashboard() {
         {documents.length === 0 && (
           <Card className="w-full p-8 flex flex-col items-center justify-center">
             <FileUp className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-medium">No documents yet</h3>
+            <h3 className="text-lg font-medium">No forms yet</h3>
             <p className="text-sm text-muted-foreground text-center max-w-md mt-2 mb-4">
-              Upload your first form to get started. We support PDF forms for automatic filling.
+              Upload your first form to get started. Our AI will help you fill it automatically.
             </p>
             <Button onClick={() => setIsUploadModalOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />

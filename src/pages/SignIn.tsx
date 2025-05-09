@@ -48,7 +48,7 @@ export default function SignIn() {
     try {
       setIsLoading(true);
       
-      // Here would be the Firebase/authentication logic
+      // Here would be the Firebase authentication logic
       // For now, we'll simulate successful login
       console.log("Attempting login with:", values);
       
@@ -76,8 +76,8 @@ export default function SignIn() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-bold">FormFill AI</CardTitle>
-          <CardDescription>Sign in to your account to continue</CardDescription>
+          <CardTitle className="text-3xl font-bold">FormFiller AI</CardTitle>
+          <CardDescription>HackIndia 2025 Project - Sign in to access your forms</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
